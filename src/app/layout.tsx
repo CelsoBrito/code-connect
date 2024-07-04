@@ -1,3 +1,4 @@
+import { Aside } from './components/Aside';
 import './globals.css';
 import type { Metadata } from "next";
 
@@ -13,7 +14,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-Br">
-      <body>{children}</body>
+      <body>
+        <div className='flex gap-[28px] w-[1200px] max-w-[90%] h-screen my-[56px] mx-auto'>
+          <Aside />
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
