@@ -1,6 +1,8 @@
 import logger from "@/logger";
 import { Post } from "../../public/types/HomePostType";
 import { CardPost } from "./components/CardPost";
+import Link from "next/link";
+import { ReadonlyURLSearchParams } from "next/navigation";
 
 // const mockPost: Post = {
 //   'id': 1,
@@ -17,8 +19,8 @@ import { CardPost } from "./components/CardPost";
 //   }
 // }
 
-async function getAllPosts() {
-  const response = await fetch('http://localhost:3042/posts');
+async function getAllPosts(page: number) {
+  const response = await fetch(`http://localhost:3042/posts?_page=${page}&_per_page=6`);
   if (!response.ok) {
     logger.error('Ops, alguma coisa deu errado!');
     return [];
@@ -27,12 +29,23 @@ async function getAllPosts() {
   return response.json();
 }
 
-export default async function Home() {
-  const posts = await getAllPosts();
+export default async function Home({ searchParams }: any) {
+  const currentPage = searchParams?.page || 1;
+  const {
+    data: posts,
+    prev,
+    next
+  } = await getAllPosts(currentPage);
   
   return (
     <main className="flex flex-wrap gap-6">
-      {posts.map((post: any) => <CardPost post={post} />)}
+      {posts.map((post: any) => <CardPost key={post.id} post={post} />)}
+      {prev && (
+        <Link className="text-[#81FE88] mx-auto" href={`/?page=${prev}`}>Página Anterior</Link>
+      )}
+      {next && (
+        <Link className="text-[#81FE88] mx-auto" href={`/?page=${next}`}>Próxima Página</Link>
+      )}
     </main>
   );
 }

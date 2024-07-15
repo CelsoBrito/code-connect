@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="pt-Br" className={prompt.className}>
       <body>
-        <div className='flex gap-[28px] w-[1200px] max-w-[90%] h-screen my-[56px] mx-auto'>
+        <div className='flex gap-[28px] w-[1200px] max-w-[90%] min-h-screen my-[56px] mx-auto'>
           <Aside />
           {children}
         </div>
